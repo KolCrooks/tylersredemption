@@ -1,0 +1,38 @@
+{
+    "name": "level1",
+    "length": 10000,
+    "objects": [
+         {
+            "type": "rect",
+            "react": "solid",
+            "pos":{
+                "x": 0,
+                "y": 100
+            },
+            "dims":{
+                "width": 100,
+                "height": 5
+            },
+            "color":{
+                "type": "solid",
+                "value": "#228B22" 
+            }
+        },
+        {
+            "type": "rect",
+            "react": "damage",
+            "pos":{
+                "x": 100,
+                "y": 100
+            },
+            "dims":{
+                "width": 100,
+                "height": 5
+            },
+            "color":{
+                "type": "texture",
+                "value": "spike.png" 
+            }
+        }
+    ]
+}

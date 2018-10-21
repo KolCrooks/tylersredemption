@@ -1,10 +1,11 @@
-function Player(sprites,context){
-    this.pos = {x: 0, y: 0};
-    this.speed = 10;
-    this.hitbox = {
-        width: 0,
-        height: 0
+class Player extends actor{
+    speed = 10;
+    constructor(objFile){
+        this.pos = {x: 0, y: 0};
+    }
+    move(){
+
     }
 
-    this.is
+    
 }
