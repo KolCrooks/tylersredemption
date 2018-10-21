@@ -1,6 +1,7 @@
     class worldObject extends actor{
 
         constructor(object){
+            super()
             this.boundingBox = object.dims;
             this.pos = object.pos;
             this.color = object.color;
@@ -8,9 +9,18 @@
         }
 
         get react(){
-            return this.react;
+            return this.r;
         }
+
+        set react(v){
+            this.r = v;
+        }
+
         get color(){
-            return this.color;
+            return this.c;
+        }
+
+        set color(v){
+            this.c = v;
         }
 }

@@ -1,7 +1,4 @@
 class actor {
-    constructor(box){
-        this.boundingBox = box;
-    }
 
     checkTouch(other, other2 = this){
         return(other2.pos.x < other.pos.x + other.boundingBox().width  && other2.pos.x + this.boundingBox().width  > other.pos.x &&
@@ -11,7 +8,14 @@ class actor {
     get position(){
         return this.pos;
     }
+
+    set position(val){
+        this.pos = val;
+    }
     get boundingBox(){
-        return this.boundingBox;
+        return this.Box;
+    }
+    set boundingBox(box){
+        this.Box = box;
     }
 }

@@ -1,15 +1,16 @@
 class logic {
     constructor(){
-        this.player = new Player("./assets/dataFiles/player.json");
-        this.level1 = new level1();
+        this.playerObj = new (new player).Player("./assets/dataFiles/player.json");
+        this.level1 = new level();
+        this.level1.loadObjects("./assets/levels/level1/level1.json");
     }
 
 
-    doLogic(deltaT){
-        this.level1.getObjsInFrame(this.player.position()).forEach((plat)=>{
+    doLogic(canvas,deltaT){
+        this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj.position).forEach((plat)=>{
             
         });
-        this.player.update(deltaT);
+        this.playerObj.update(deltaT);
     }
 
     drawObj(object){
