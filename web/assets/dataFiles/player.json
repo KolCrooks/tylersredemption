@@ -1,0 +1,9 @@
+{
+    "sprites":{
+        "states":{
+            "standing": [
+                "player/player.png"
+            ]
+        }
+    }
+}
