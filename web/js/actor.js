@@ -1,3 +1,4 @@
+
 class actor {
 
     checkTouch(other, other2 = this){

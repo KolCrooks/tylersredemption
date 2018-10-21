@@ -7,15 +7,11 @@ class logic {
 
 
     doLogic(canvas,deltaT){
-        this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj.position).forEach((plat)=>{
+        let obs =this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj)
+        obs.forEach((obj)=>{
             
+            obj.draw(canvas.getContext('2d'))
         });
         this.playerObj.update(deltaT);
-    }
-
-    drawObj(object){
-        switch(object.type){
-
-        }
     }
 }

@@ -19,7 +19,7 @@ let drawLoop = ()=>{
     //Update Logic
     pLogic.doLogic(canvas,deltaT);
     //Update Draw
-
+    
 }
 
 let loadJS = async (files)=>{
