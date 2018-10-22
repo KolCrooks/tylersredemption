@@ -31,16 +31,32 @@ var player = function(){
             this.speed = 0.3;
             this.pos = {x: 0, y: 0};6
             this.gravity = 0.3;
+            this.jumpPow = 0.5;
+            this.curJump = 0.0;
+            this.jumpLength = 3000;
+            this.jumping = false;
+            this.onGround = false;
         }
 
         move(keys,world,deltaT){
-
+            if(this.attemptMove(world,{
+                y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/(this.jumpLength))*this.curJump),
+                x: this.pos.x
+            }) && this.jumping){
+                console.log("jumping")
+                this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/(this.jumpLength))*this.curJump)
+                this.curJump += deltaT;
+                if(this.curJump >= this.jumpLength){
+                    this.curJump = 0;
+                    this.jumping = false;
+                }
+            }
             if(this.attemptMove(world,{
                 y: this.pos.y + this.gravity*deltaT,
                 x: this.pos.x
             }))this.pos.y += this.gravity*deltaT;
             else{
-                
+                this.onGround = true;
                 let closest = this.findClosestBelowY(world);
                 this.pos.y += closest.pos.y - (this.pos.y+this.boundingBox.height);
             }
@@ -71,6 +87,10 @@ var player = function(){
                             this.pos.x -= this.pos.x - (closest.pos.x+closest.boundingBox.width);
                         }
                     break;
+                    case ' ':
+                        if(this.onGround)
+                        this.jumping = true;
+                break;
                 }
             });
         }
