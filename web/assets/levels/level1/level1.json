@@ -19,6 +19,22 @@
             }
         },
         {
+            "type": "rect",
+            "react": "solid",
+            "pos":{
+                "x": 100,
+                "y": 350
+            },
+            "dims":{
+                "width": 50,
+                "height": 50
+            },
+            "color":{
+                "type": "solid",
+                "value": "#228B22" 
+            }
+        },
+        {
             "type": "image",
             "react": "damage",
             "pos":{

@@ -28,8 +28,8 @@ var player = function(){
                 height: 64
             }
             this.state = "standing"
-            this.speed = 0.5;
-            this.pos = {x: 0, y: 0};
+            this.speed = 0.3;
+            this.pos = {x: 0, y: 0};6
             this.gravity = 0.3;
         }
 
@@ -53,6 +53,10 @@ var player = function(){
                             x: this.pos.x + this.speed*deltaT
                         }))
                         this.pos.x += this.speed*deltaT;
+                        else{
+                            let closest = this.findClosestRightX(world);
+                            this.pos.x +=  (this.pos.x+this.boundingBox.width) - closest.pos.x;
+                        }
                     break;
                     case 'a':
                         if(this.attemptMove(world,{
@@ -60,10 +64,17 @@ var player = function(){
                             x: this.pos.x - this.speed*deltaT
                         }))
                         this.pos.x -= this.speed*deltaT;
+                        else{
+                            let closest = this.findClosestLeftX(world);
+                            debugger
+                            console.log(this.pos.x - (closest.pos.x+closest.boundingBox.width))
+                            this.pos.x -= this.pos.x - (closest.pos.x+closest.boundingBox.width);
+                        }
                     break;
                 }
             });
         }
+
         attemptMove(world,newPos){
             let canMove = true;
             world.forEach((obj)=>{
@@ -76,10 +87,27 @@ var player = function(){
             });
             return canMove;
         }
+
         findClosestBelowY(objs){
             let closest = {pos:{y:100000}};
             objs.forEach((obj)=>{
-                if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y) closest = obj;
+                if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y && this.pos.y + this.boundingBox.height <= obj.pos.y) closest = obj;
+            });
+            return closest;
+        }
+
+        findClosestLeftX(objs){
+            let closest = {pos:{x:100000},boundingBox:{width:10000}};
+            objs.forEach((obj)=>{
+                if((closest.pos.x+closest.boundingBox.width) - this.pos.x > (obj.pos.x+obj.boundingBox.width) - this.pos.x && this.pos.x <= obj.pos.x+obj.boundingBox.width) closest = obj;
+            });
+            return closest;
+        }
+
+        findClosestRightX(objs){
+            let closest = {pos:{x:100000},boundingBox:{width:10000}};
+            objs.forEach((obj)=>{
+                if(closest.pos.x - (this.pos.x+this.boundingBox.width)  > obj.pos.x - (this.pos.x+this.boundingBox.width) && this.pos.x <= obj.pos.x+obj.boundingBox.width) closest = obj;
             });
             return closest;
         }
@@ -88,6 +116,7 @@ var player = function(){
             this.move(keys,world,deltaT);
             this.draw(context);
         }
+
         draw(context){
             
             context.drawImage(this.sprites.states[this.state].files[this.sprites.states[this.state].frame], this.pos.x, this.pos.y);
