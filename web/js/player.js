@@ -31,7 +31,7 @@ var player = function(){
             this.speed = 0.3;
             this.pos = {x: 0, y: 0};6
             this.gravity = 0.3;
-            this.jumpPow = 0.5;
+            this.jumpPow = 0.8;
             this.curJump = 0.0;
             this.jumpLength = 3000;
             this.jumping = false;
@@ -39,14 +39,15 @@ var player = function(){
         }
 
         move(keys,world,deltaT){
+            console.log(this.curJump,this.jumping)
             if(this.attemptMove(world,{
-                y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/(this.jumpLength))*this.curJump),
+                y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)),
                 x: this.pos.x
             }) && this.jumping){
                 console.log("jumping")
-                this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/(this.jumpLength))*this.curJump)
+                this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10))
                 this.curJump += deltaT;
-                if(this.curJump >= this.jumpLength){
+                if(this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)) < this.gravity*deltaT && this.curJump > 100){
                     this.curJump = 0;
                     this.jumping = false;
                 }
@@ -54,7 +55,11 @@ var player = function(){
             if(this.attemptMove(world,{
                 y: this.pos.y + this.gravity*deltaT,
                 x: this.pos.x
-            }))this.pos.y += this.gravity*deltaT;
+            })){
+                console.log("mainGrav")
+                this.onGround = false;
+               this.pos.y += this.gravity*deltaT; 
+            }
             else{
                 this.onGround = true;
                 let closest = this.findClosestBelowY(world);
