@@ -1,9 +1,12 @@
 {
     "sprites":{
         "states":{
-            "standing": [
+            "standing": {
+                "frame": 0,
+                "files":[
                 "player/player.png"
-            ]
+                ]
+            }
         }
     }
 }

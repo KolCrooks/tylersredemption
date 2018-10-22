@@ -14,8 +14,10 @@
             switch(this.type){
                 case "rect":
                     context.beginPath()
-                    context.strokeStyle = this.color;
-                    context.rect(this.position.x,this.position.y,this.boundingBox.width,this.boundingBox.height);
+                    console.log(this.color)
+                    if(this.color.type == "solid")
+                    context.fillStyle = this.color.value;
+                    context.fillRect(this.position.x,this.position.y,this.boundingBox.width,this.boundingBox.height);
                     context.stroke();
                 break;
             }
