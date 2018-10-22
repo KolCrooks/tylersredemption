@@ -23,7 +23,7 @@
             "react": "damage",
             "pos":{
                 "x": 100,
-                "y": 100
+                "y": 700
             },
             "dims":{
                 "width": 100,

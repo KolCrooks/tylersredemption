@@ -14,7 +14,6 @@
             switch(this.type){
                 case "rect":
                     context.beginPath()
-                    console.log(this.color)
                     if(this.color.type == "solid")
                     context.fillStyle = this.color.value;
                     context.fillRect(this.position.x,this.position.y,this.boundingBox.width,this.boundingBox.height);

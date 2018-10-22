@@ -1,4 +1,3 @@
-"sloppy mode"
 class level{
     constructor(){
         this.levelObjects = new Array();

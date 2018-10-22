@@ -15,7 +15,8 @@ var oldTime = Date.now()
 let drawLoop = ()=>{
     let deltaT = Date.now()-oldTime;
     oldTime = Date.now();
-
+    context.fillStyle = "white";
+    context.fillRect(0,0,canvas.width,canvas.height);
     //Update Logic
     pLogic.doLogic(canvas,deltaT);
     //Update Draw

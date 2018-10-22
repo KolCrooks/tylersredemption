@@ -8,11 +8,15 @@ class logic {
 
 
     doLogic(canvas,deltaT){
-        
-        let obs =this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj)
+        let allObj = []; 
+        let obs = this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj)
         obs.forEach((obj)=>{
             obj.draw(canvas.getContext('2d'))
         });
-        this.playerObj.update(deltaT,this.keyListen.getKeys(),context);
+
+
+        allObj = allObj.concat(obs);
+        
+        this.playerObj.update(deltaT,this.keyListen.getKeys(),allObj,context);
     }
 }
