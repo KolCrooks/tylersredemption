@@ -55,7 +55,8 @@ var player = function(){
                         this.pos.x += this.speed*deltaT;
                         else{
                             let closest = this.findClosestRightX(world);
-                            this.pos.x +=  (this.pos.x+this.boundingBox.width) - closest.pos.x;
+                            
+                            this.pos.x += closest.pos.x - (this.pos.x+this.boundingBox.width);
                         }
                     break;
                     case 'a':
@@ -66,8 +67,7 @@ var player = function(){
                         this.pos.x -= this.speed*deltaT;
                         else{
                             let closest = this.findClosestLeftX(world);
-                            debugger
-                            console.log(this.pos.x - (closest.pos.x+closest.boundingBox.width))
+                            
                             this.pos.x -= this.pos.x - (closest.pos.x+closest.boundingBox.width);
                         }
                     break;
@@ -91,7 +91,19 @@ var player = function(){
         findClosestBelowY(objs){
             let closest = {pos:{y:100000}};
             objs.forEach((obj)=>{
-                if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y && this.pos.y + this.boundingBox.height <= obj.pos.y) closest = obj;
+                if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y && this.pos.y + this.boundingBox.height <= obj.pos.y){
+                    if(this.checkTouch(obj,{
+                        boundingBox: {
+                            width: this.boundingBox.width+20,
+                            height: this.boundingBox.height+20
+                        },
+                        pos: {
+                            x: this.pos.x-10,
+                            y: this.pos.y-10
+                        }
+                    }))
+                    closest = obj;  
+                }
             });
             return closest;
         }
@@ -99,7 +111,22 @@ var player = function(){
         findClosestLeftX(objs){
             let closest = {pos:{x:100000},boundingBox:{width:10000}};
             objs.forEach((obj)=>{
-                if((closest.pos.x+closest.boundingBox.width) - this.pos.x > (obj.pos.x+obj.boundingBox.width) - this.pos.x && this.pos.x <= obj.pos.x+obj.boundingBox.width) closest = obj;
+
+                if(this.pos.x - (closest.pos.x+closest.boundingBox.width) < this.pos.x - (obj.pos.x+obj.boundingBox.width) && (this.pos.x >= (obj.pos.x + obj.boundingBox.width))){
+                    
+                    if(this.checkTouch(obj,{
+                        boundingBox: {
+                            width: this.boundingBox.width+20,
+                            height: this.boundingBox.height+20
+                        },
+                        pos: {
+                            x: this.pos.x-10,
+                            y: this.pos.y-10
+                        }
+                    }))
+
+                    closest = obj;
+                } 
             });
             return closest;
         }
@@ -107,7 +134,22 @@ var player = function(){
         findClosestRightX(objs){
             let closest = {pos:{x:100000},boundingBox:{width:10000}};
             objs.forEach((obj)=>{
-                if(closest.pos.x - (this.pos.x+this.boundingBox.width)  > obj.pos.x - (this.pos.x+this.boundingBox.width) && this.pos.x <= obj.pos.x+obj.boundingBox.width) closest = obj;
+                let a = (this.pos.x+this.boundingBox.width) - closest.pos.x
+                let b = (this.pos.x+this.boundingBox.width) - closest.pos.x
+                let c = (this.pos.x+this.boundingBox.width) <= obj.pos.x
+                if(closest.pos.x - (this.pos.x+this.boundingBox.width) > obj.pos.x - (this.pos.x+this.boundingBox.width) && (this.pos.x+this.boundingBox.width) <= obj.pos.x){
+                    if(this.checkTouch(obj,{
+                        boundingBox: {
+                            width: this.boundingBox.width+20,
+                            height: this.boundingBox.height+20
+                        },
+                        pos: {
+                            x: this.pos.x-10,
+                            y: this.pos.y-10
+                        }
+                    }))
+                    closest = obj;
+                } 
             });
             return closest;
         }
