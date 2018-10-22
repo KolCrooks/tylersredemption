@@ -36,27 +36,27 @@ var player = function(){
             this.jumpLength = 3000;
             this.jumping = false;
             this.onGround = false;
+            this.air = 0.9;
         }
 
         move(keys,world,deltaT){
-            console.log(this.curJump,this.jumping)
             if(this.attemptMove(world,{
                 y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)),
                 x: this.pos.x
             }) && this.jumping){
-                console.log("jumping")
                 this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10))
                 this.curJump += deltaT;
+                this.air = 1.2;
                 if(this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)) < this.gravity*deltaT && this.curJump > 100){
                     this.curJump = 0;
                     this.jumping = false;
+                    this.air = 0.9;
                 }
             }
             if(this.attemptMove(world,{
                 y: this.pos.y + this.gravity*deltaT,
                 x: this.pos.x
             })){
-                console.log("mainGrav")
                 this.onGround = false;
                this.pos.y += this.gravity*deltaT; 
             }
@@ -71,9 +71,9 @@ var player = function(){
                     case 'd':
                         if(this.attemptMove(world,{
                             y: this.pos.y,
-                            x: this.pos.x + this.speed*deltaT
+                            x: this.pos.x + this.speed*deltaT*this.air
                         }))
-                        this.pos.x += this.speed*deltaT;
+                        this.pos.x += this.speed*deltaT*this.air;
                         else{
                             let closest = this.findClosestRightX(world);
                             
@@ -83,9 +83,9 @@ var player = function(){
                     case 'a':
                         if(this.attemptMove(world,{
                             y: this.pos.y,
-                            x: this.pos.x - this.speed*deltaT
+                            x: this.pos.x - this.speed*deltaT*this.air
                         }))
-                        this.pos.x -= this.speed*deltaT;
+                        this.pos.x -= this.speed*deltaT*this.air;
                         else{
                             let closest = this.findClosestLeftX(world);
                             
