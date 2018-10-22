@@ -6,7 +6,7 @@ var FPS = 30;
 let setup = ()=>{
     canvas.width = 800;
     canvas.height = 600;
-    pLogic = new logic();
+    pLogic = new logic(canvas);
     console.log(pLogic)
     setInterval(drawLoop, 1000/FPS);
 }
@@ -42,7 +42,8 @@ loadJS([
     "js/actor.js",
     "js/player.js",
     "js/logic.js",
-    "js/worldObject.js"
+    "js/worldObject.js",
+    "js/keyboard.js"
 ]);
 
 document.body.appendChild(canvas);

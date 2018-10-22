@@ -11,10 +11,8 @@
         }
 
         draw(context){
-            console.log("test")
             switch(this.type){
                 case "rect":
-                console.log("rect")
                     context.beginPath()
                     context.strokeStyle = this.color;
                     context.rect(this.position.x,this.position.y,this.boundingBox.width,this.boundingBox.height);
