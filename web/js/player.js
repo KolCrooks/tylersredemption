@@ -119,12 +119,12 @@ var player = function(){
                 if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y && this.pos.y + this.boundingBox.height <= obj.pos.y){
                     if(this.checkTouch(obj,{
                         boundingBox: {
-                            width: this.boundingBox.width+20,
-                            height: this.boundingBox.height+20
+                            width: this.boundingBox.width+30,
+                            height: this.boundingBox.height+30
                         },
                         pos: {
-                            x: this.pos.x-10,
-                            y: this.pos.y-10
+                            x: this.pos.x-15,
+                            y: this.pos.y-15
                         }
                     }))
                     closest = obj;  
@@ -141,12 +141,12 @@ var player = function(){
                     
                     if(this.checkTouch(obj,{
                         boundingBox: {
-                            width: this.boundingBox.width+20,
-                            height: this.boundingBox.height+20
+                            width: this.boundingBox.width+30,
+                            height: this.boundingBox.height+30
                         },
                         pos: {
-                            x: this.pos.x-10,
-                            y: this.pos.y-10
+                            x: this.pos.x-15,
+                            y: this.pos.y-15
                         }
                     }))
 
@@ -165,12 +165,12 @@ var player = function(){
                 if(closest.pos.x - (this.pos.x+this.boundingBox.width) > obj.pos.x - (this.pos.x+this.boundingBox.width) && (this.pos.x+this.boundingBox.width) <= obj.pos.x){
                     if(this.checkTouch(obj,{
                         boundingBox: {
-                            width: this.boundingBox.width+20,
-                            height: this.boundingBox.height+20
+                            width: this.boundingBox.width+30,
+                            height: this.boundingBox.height+30
                         },
                         pos: {
-                            x: this.pos.x-10,
-                            y: this.pos.y-10
+                            x: this.pos.x-15,
+                            y: this.pos.y-15
                         }
                     }))
                     closest = obj;
