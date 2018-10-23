@@ -37,22 +37,26 @@ var player = function(){
             this.jumping = false;
             this.onGround = false;
             this.air = 0.9;
+            this.screenPos = 0;
         }
 
-        move(keys,world,deltaT){
-            if(this.attemptMove(world,{
-                y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)),
-                x: this.pos.x
-            }) && this.jumping){
-                this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10))
+        move(keys,world,deltaT,context){
+            if(this.jumping){
                 this.curJump += deltaT;
-                this.air = 1.2;
-                if(this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)) < this.gravity*deltaT && this.curJump > 100){
-                    this.curJump = 0;
-                    this.jumping = false;
-                    this.air = 0.9;
+                if(this.attemptMove(world,{
+                    y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)),
+                    x: this.pos.x
+                })){
+                    this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10))
+                    this.air = 1.2;
+                    if(this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)) < this.gravity*deltaT && this.curJump > 100){
+                        this.curJump = 0;
+                        this.jumping = false;
+                        this.air = 0.9;
+                    }
                 }
             }
+
             if(this.attemptMove(world,{
                 y: this.pos.y + this.gravity*deltaT,
                 x: this.pos.x
@@ -66,6 +70,7 @@ var player = function(){
                 this.pos.y += closest.pos.y - (this.pos.y+this.boundingBox.height);
             }
             keys.forEach((val,key)=>{
+
                 if(val)
                 switch(key){
                     case 'd':
@@ -73,10 +78,15 @@ var player = function(){
                             y: this.pos.y,
                             x: this.pos.x + this.speed*deltaT*this.air
                         }))
+                        if(this.pos.x >= context.canvas.clientWidth*5/8){
+                            this.screenPos += this.speed*deltaT*this.air;
+                        }else
                         this.pos.x += this.speed*deltaT*this.air;
                         else{
                             let closest = this.findClosestRightX(world);
-                            
+                            if(this.pos.x >= context.canvas.clientWidth*5/8){
+                                this.screenPos += closest.pos.x - (this.pos.x+this.boundingBox.width)
+                            }else
                             this.pos.x += closest.pos.x - (this.pos.x+this.boundingBox.width);
                         }
                     break;
@@ -84,11 +94,17 @@ var player = function(){
                         if(this.attemptMove(world,{
                             y: this.pos.y,
                             x: this.pos.x - this.speed*deltaT*this.air
-                        }))
-                        this.pos.x -= this.speed*deltaT*this.air;
+                        })){
+                            if(this.pos.x <= context.canvas.clientWidth*(3/8) && this.screenPos >= 0){
+                                this.screenPos -= this.speed*deltaT*this.air;
+                            }else
+                            this.pos.x -= this.speed*deltaT*this.air;
+                        }
                         else{
                             let closest = this.findClosestLeftX(world);
-                            
+                            if(this.pos.x <= context.canvas.clientWidth*(3/8) && this.screenPos >= 0){
+                                this.screenPos -= this.pos.x - (closest.pos.x+closest.boundingBox.width);
+                            }else
                             this.pos.x -= this.pos.x - (closest.pos.x+closest.boundingBox.width);
                         }
                     break;
@@ -100,87 +116,9 @@ var player = function(){
             });
         }
 
-        attemptMove(world,newPos){
-            let canMove = true;
-            world.forEach((obj)=>{
-                if(this.checkTouch(obj,{
-                    boundingBox: this.boundingBox,
-                    pos: newPos
-                })){
-                    canMove = false;
-                }
-            });
-            return canMove;
-        }
-
-        findClosestBelowY(objs){
-            let closest = {pos:{y:100000}};
-            objs.forEach((obj)=>{
-                if(closest.pos.y - this.pos.y > obj.pos.y - this.pos.y && this.pos.y + this.boundingBox.height <= obj.pos.y){
-                    if(this.checkTouch(obj,{
-                        boundingBox: {
-                            width: this.boundingBox.width+30,
-                            height: this.boundingBox.height+30
-                        },
-                        pos: {
-                            x: this.pos.x-15,
-                            y: this.pos.y-15
-                        }
-                    }))
-                    closest = obj;  
-                }
-            });
-            return closest;
-        }
-
-        findClosestLeftX(objs){
-            let closest = {pos:{x:100000},boundingBox:{width:10000}};
-            objs.forEach((obj)=>{
-
-                if(this.pos.x - (closest.pos.x+closest.boundingBox.width) < this.pos.x - (obj.pos.x+obj.boundingBox.width) && (this.pos.x >= (obj.pos.x + obj.boundingBox.width))){
-                    
-                    if(this.checkTouch(obj,{
-                        boundingBox: {
-                            width: this.boundingBox.width+30,
-                            height: this.boundingBox.height+30
-                        },
-                        pos: {
-                            x: this.pos.x-15,
-                            y: this.pos.y-15
-                        }
-                    }))
-
-                    closest = obj;
-                } 
-            });
-            return closest;
-        }
-
-        findClosestRightX(objs){
-            let closest = {pos:{x:100000},boundingBox:{width:10000}};
-            objs.forEach((obj)=>{
-                let a = (this.pos.x+this.boundingBox.width) - closest.pos.x
-                let b = (this.pos.x+this.boundingBox.width) - closest.pos.x
-                let c = (this.pos.x+this.boundingBox.width) <= obj.pos.x
-                if(closest.pos.x - (this.pos.x+this.boundingBox.width) > obj.pos.x - (this.pos.x+this.boundingBox.width) && (this.pos.x+this.boundingBox.width) <= obj.pos.x){
-                    if(this.checkTouch(obj,{
-                        boundingBox: {
-                            width: this.boundingBox.width+30,
-                            height: this.boundingBox.height+30
-                        },
-                        pos: {
-                            x: this.pos.x-15,
-                            y: this.pos.y-15
-                        }
-                    }))
-                    closest = obj;
-                } 
-            });
-            return closest;
-        }
 
         update(deltaT,keys,world,context){
-            this.move(keys,world,deltaT);
+            this.move(keys,world,deltaT,context);
             this.draw(context);
         }
 

@@ -11,7 +11,7 @@ class logic {
         let allObj = []; 
         let obs = this.level1.getObjsInFrame({width: canvas.width, height: canvas.height},this.playerObj)
         obs.forEach((obj)=>{
-            obj.draw(canvas.getContext('2d'))
+            obj.draw(canvas.getContext('2d'),this.playerObj.screenPos)
         });
 
 

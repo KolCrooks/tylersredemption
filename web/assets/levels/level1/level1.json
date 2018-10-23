@@ -22,8 +22,40 @@
             "type": "rect",
             "react": "solid",
             "pos":{
-                "x": 100,
+                "x": 450,
+                "y": 400
+            },
+            "dims":{
+                "width": 500,
+                "height": 55
+            },
+            "color":{
+                "type": "solid",
+                "value": "blue" 
+            }
+        },
+        {
+            "type": "rect",
+            "react": "solid",
+            "pos":{
+                "x": 700,
                 "y": 350
+            },
+            "dims":{
+                "width": 50,
+                "height": 50
+            },
+            "color":{
+                "type": "solid",
+                "value": "#228B22" 
+            }
+        },
+        {
+            "type": "rect",
+            "react": "solid",
+            "pos":{
+                "x": 200,
+                "y": 270
             },
             "dims":{
                 "width": 50,

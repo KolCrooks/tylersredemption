@@ -6,11 +6,13 @@
             this.type = object.type;
             this.boundingBox = object.dims;
             this.position = object.pos;
+            this.originalX = object.pos.x;
             this.color = object.color;
             this.react = object.react;
         }
 
-        draw(context){
+        draw(context,worldOffset){
+            this.pos.x = this.originalX - worldOffset
             switch(this.type){
                 case "rect":
                     context.beginPath()
