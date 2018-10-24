@@ -38,6 +38,8 @@ var player = function(){
             this.onGround = false;
             this.air = 0.9;
             this.screenPos = 0;
+            this.optionsToggle = true;
+            
         }
 
         move(keys,world,deltaT,context){
@@ -70,7 +72,6 @@ var player = function(){
                 this.pos.y += closest.pos.y - (this.pos.y+this.boundingBox.height);
             }
             keys.forEach((val,key)=>{
-
                 if(val)
                 switch(key){
                     case 'd':
@@ -111,7 +112,10 @@ var player = function(){
                     case ' ':
                         if(this.onGround)
                         this.jumping = true;
-                break;
+                        break;
+                    case 'F2':
+                        this.optionsToggle = !this.optionsToggle;
+                    break;
                 }
             });
         }
@@ -123,7 +127,11 @@ var player = function(){
         }
 
         draw(context){
-            
+            if(this.optionsToggle){
+                context.font = "14px Arial";
+                context.fillText(`Screen Scroll: ${this.screenPos}`,10,14);
+                context.fillText(`Position: (${this.pos.x},${this.pos.y})`,10,30);
+            }
             context.drawImage(this.sprites.states[this.state].files[this.sprites.states[this.state].frame], this.pos.x, this.pos.y);
             
             this.sprites.states[this.state].frame++;
