@@ -20,6 +20,32 @@ class actor {
     set boundingBox(box){
         this.Box = box;
     }
+
+    findClosestAboveY(objs){
+        let closest = {pos:{y:100000},boundingBox:{height:10000}};
+        let test
+        objs.forEach((obj)=>{
+            let a = this.pos.y - (closest.pos.y+closest.boundingBox.height)
+            let b = this.pos.y - (obj.pos.y+obj.boundingBox.height)
+            test = obj
+            if(this.pos.y - (closest.pos.y+closest.boundingBox.height) < this.pos.y - (obj.pos.y+obj.boundingBox.height) && this.pos.y >= obj.pos.y+obj.boundingBox.height){
+                if(this.checkTouch(obj,{
+                    boundingBox: {
+                        width: this.boundingBox.width+30,
+                        height: this.boundingBox.height+30
+                    },
+                    pos: {
+                        x: this.pos.x-15,
+                        y: this.pos.y-30
+                    }
+                }))
+                closest = obj;  
+            }
+        });
+        if(closest.pos.y >= 10000) return this;
+        return closest;
+    }
+
     findClosestBelowY(objs){
         let closest = {pos:{y:100000}};
         objs.forEach((obj)=>{
@@ -37,6 +63,7 @@ class actor {
                 closest = obj;  
             }
         });
+        if(closest.pos.y >= 10000) return this;
         return closest;
     }
 
@@ -60,15 +87,13 @@ class actor {
                 closest = obj;
             } 
         });
+        if(closest.pos.x >= 10000) return this;
         return closest;
     }
 
     findClosestRightX(objs){
         let closest = {pos:{x:100000},boundingBox:{width:10000}};
         objs.forEach((obj)=>{
-            let a = (this.pos.x+this.boundingBox.width) - closest.pos.x
-            let b = (this.pos.x+this.boundingBox.width) - closest.pos.x
-            let c = (this.pos.x+this.boundingBox.width) <= obj.pos.x
             if(closest.pos.x - (this.pos.x+this.boundingBox.width) > obj.pos.x - (this.pos.x+this.boundingBox.width) && (this.pos.x+this.boundingBox.width) <= obj.pos.x){
                 if(this.checkTouch(obj,{
                     boundingBox: {
@@ -83,6 +108,8 @@ class actor {
                 closest = obj;
             } 
         });
+        if(closest.pos.x >= 10000) return this;
+
         return closest;
     }
     attemptMove(world,newPos){

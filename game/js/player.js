@@ -45,17 +45,24 @@ var player = function(){
         move(keys,world,deltaT,context){
             if(this.jumping){
                 this.curJump += deltaT;
+                this.air = 1.2;
                 if(this.attemptMove(world,{
                     y: this.pos.y - this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)),
                     x: this.pos.x
                 })){
                     this.pos.y -= this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10))
-                    this.air = 1.2;
                     if(this.jumpPow*deltaT*Math.sin((Math.PI/this.jumpLength)*(this.curJump*10)) < this.gravity*deltaT && this.curJump > 100){
                         this.curJump = 0;
                         this.jumping = false;
                         this.air = 0.9;
                     }
+                }else{
+                    let closest = this.findClosestAboveY(world);
+                    console.log(closest,closest.pos.y+closest.boundingBox.height - this.pos.y)
+                    this.pos.y -= this.pos.y - (closest.pos.y+closest.boundingBox.height)
+                        this.curJump = 0;
+                        this.jumping = false;
+                        this.air = 0.9;
                 }
             }
 
@@ -66,8 +73,9 @@ var player = function(){
                 this.onGround = false;
                this.pos.y += this.gravity*deltaT; 
             }
-            else{
+            else if(!this.jumping){
                 this.onGround = true;
+                console.log("other")
                 let closest = this.findClosestBelowY(world);
                 this.pos.y += closest.pos.y - (this.pos.y+this.boundingBox.height);
             }
