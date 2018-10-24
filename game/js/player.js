@@ -131,14 +131,15 @@ var player = function(){
 
         update(deltaT,keys,world,context){
             this.move(keys,world,deltaT,context);
-            this.draw(context);
+            this.draw(context,deltaT);
         }
 
-        draw(context){
+        draw(context,deltaT){
             if(this.optionsToggle){
                 context.font = "14px Arial";
                 context.fillText(`Screen Scroll: ${this.screenPos}`,10,14);
                 context.fillText(`Position: (${this.pos.x},${this.pos.y})`,10,30);
+                context.fillText(`DeltaT: ${deltaT}`,10,46);
             }
             context.drawImage(this.sprites.states[this.state].files[this.sprites.states[this.state].frame], this.pos.x, this.pos.y);
             
